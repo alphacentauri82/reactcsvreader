@@ -65,23 +65,25 @@ function _request(params) {
 }
 
 // application api
-
-function getStats() {
-  return _request(`${endpoint}/stats`);
+function getUsers() {
+  return _request(`${endpoint}/users`);
 }
 
-function addServer(payload) {
+function uploadFiles(payload) {
+  console.log('qui', payload)
   return _request({
-    url: `${endpoint}/servers`,
+    url: `${endpoint}/files`,
     method: 'POST',
-    headers: new Headers({'content-type': 'application/json'}),
-    body: JSON.stringify(payload),
+    headers: new Headers({
+      'Content-Type': 'application/vnd.ms-excel'
+    }),
+    body: payload,
     ...defaultParams
   });
 }
 
 export default {
-  getStats,
-  addServer,
+  uploadFiles,
+  getUsers,
   setEndpoint
 };

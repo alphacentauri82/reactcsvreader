@@ -9,20 +9,12 @@ import AirplanemodeActiveIcon from 'material-ui/svg-icons/device/airplanemode-ac
 import NavigationButton from 'components/NavigationButton';
 
 export default class AppBar extends React.Component {
-  static propTypes = {
-    children: PropTypes.node.isRequired
-  };
-
   render() {
     const {children} = this.props;
 
     return (
       <Toolbar>
-        <ToolbarGroup style={{paddingLeft: 20}} firstChild>
-          <AirplanemodeActiveIcon color="white" style={{height: 40, width: 40, marginRight: 30}} />
-          <NavigationButton to="/" label="Servers" exact />
-          <NavigationButton to="/users" label="Users" exact />
-        </ToolbarGroup>
+        <ToolbarGroup style={{paddingLeft: 20}} firstChild/>
         <ToolbarGroup>
           <TextField
             hintText="Filter"

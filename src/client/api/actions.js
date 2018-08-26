@@ -1,7 +1,10 @@
-import {createAction} from 'redux-actions';
-
+import {
+  createAction
+} from 'redux-actions';
 import api from 'api/index';
-import {showModal} from 'containers/ModalsLayout/actions';
+import {
+  showModal
+} from 'containers/ModalsLayout/actions';
 import ErrorWindow from 'components/ErrorWindow';
 
 function* createGuidGenerator() {
@@ -18,63 +21,73 @@ export const apiRequestStarted = createAction(API_REQUEST_STARTED);
 export const API_REQUEST_FINISHED = 'API_REQUEST_FINISHED';
 export const apiRequestFinished = createAction(API_REQUEST_FINISHED);
 
-export const API_DATA_SERVERS_LOADED = 'API_DATA_SERVERS_LOADED';
-export const apiDataServersLoaded = createAction(API_DATA_SERVERS_LOADED);
+export const API_DATA_USERS_LOADED = 'API_DATA_USERS_LOADED';
+export const apiDataUsersLoaded = createAction(API_DATA_USERS_LOADED);
 
-export function apiGetServers(callback) {
-  return function dispatchApiGetServers(dispatch) {
+export function apiGetUsers(callback) {
+  return function dispatchApiGetUsers(dispatch) {
     const requestId = guidGenerator.next().value;
-    dispatch(apiRequestStarted({requestId}));
+    dispatch(apiRequestStarted({
+      requestId
+    }));
     return api
-      .getStats()
+      .getUsers()
       .then((data) => {
-        dispatch(apiDataServersLoaded(data));
-        dispatch(apiRequestFinished({requestId}));
+        dispatch(apiDataUsersLoaded(data));
+        dispatch(apiRequestFinished({
+          requestId
+        }));
         if (callback) {
-          callback(); // get rid of callback here?
+          callback();
         }
       })
       .catch((error) => {
-        dispatch(apiRequestFinished({requestId, error}));
-        dispatch(
-          showModal({
-            key: ErrorWindow.NAME,
-            props: {
-              title: error.title,
-              message: error.message,
-              explanation: `URL: ${error.url} ${error.statusCode}`
-            }
-          })
-        );
+        dispatch(apiRequestFinished({
+          requestId,
+          error
+        }));
+        dispatch(showModal({
+          key: ErrorWindow.NAME,
+          props: {
+            title: error.title,
+            message: error.message,
+            explanation: `URL: ${error.url} ${error.statusCode}`
+          }
+        }));
       });
-  };
+  }
 }
 
-export function apiAddServer(data, callback) {
-  return function dispatchApiAddServer(dispatch) {
+export function uploadFiles(data, callback) {
+  return function dispatchApiUploadFile(dispatch) {
     const requestId = guidGenerator.next().value;
-    dispatch(apiRequestStarted({requestId}));
+    dispatch(apiRequestStarted({
+      requestId
+    }));
     return api
-      .addServer(data)
+      .uploadFiles(data)
       .then(() => {
-        dispatch(apiGetServers());
-        dispatch(apiRequestFinished({requestId}));
+        dispatch(apiGetUsers());
+        dispatch(apiRequestFinished({
+          requestId
+        }));
         if (callback) {
-          callback(); // get rid of callback here?
+          callback();
         }
       })
       .catch((error) => {
-        dispatch(apiRequestFinished({requestId, error}));
-        dispatch(
-          showModal({
-            key: ErrorWindow.NAME,
-            props: {
-              title: error.title,
-              message: error.message,
-              explanation: `URL: ${error.url} ${error.statusCode}`
-            }
-          })
-        );
+        dispatch(apiRequestFinished({
+          requestId,
+          error
+        }));
+        dispatch(showModal({
+          key: ErrorWindow.NAME,
+          props: {
+            title: error.title,
+            message: error.message,
+            explanation: `URL: ${error.url} ${error.statusCode}`
+          }
+        }));
       });
-  };
+  }
 }
